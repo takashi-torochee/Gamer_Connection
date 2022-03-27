@@ -1,26 +1,29 @@
 Rails.application.routes.draw do
-  namespace :public do
-    get 'relationships/follows'
-    get 'relationships/followers'
-  end
-  namespace :public do
-    get 'users/show'
-    get 'users/edit'
-    get 'users/withdraw_confirm'
-  end
-  namespace :public do
-    get 'posts/new'
-    get 'posts/show'
-  end
-  namespace :public do
-    get 'homes/top'
+
+    get 'relationships/follows' => 'public/relationships#follows'
+    get 'relationships/followers' => 'public/relationships#followers'
+
+
+    get 'users' => 'public/users#show'
+    get 'users/edit' => 'public/users#edit'
+    get 'users/withdraw_confirm' => 'public/users#withdraw_confirm'
+
+    get 'users/posts' => 'public/posts#new'
+    post 'users/posts' => 'public/posts#create'
+    get 'users/posts/edit/:id' => 'public/posts#edit', as: "users_posts_edit"
+    patch 'users/posts/edit/:id' => 'public/posts#update'
+    get 'users/posts/:id' => 'public/posts#show', as: "users_posts_show"
+    delete 'users/posts/:id' => 'public/posts#destroy', as: "destroy_posts"
+
+
+
+    root to: 'public/homes#top'
+
+  namespace :admin do
+    resources :users, only: [:show, :edit]
   end
   namespace :admin do
-    get 'users/show'
-    get 'users/edit'
-  end
-  namespace :admin do
-    get 'homes/top'
+    get 'homes'
   end
 
 
